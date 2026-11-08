@@ -183,8 +183,8 @@ function resultado(){
       <div class="k">Siguiente paso</div>
       <h3>Mándame tu resultado por DM y te digo qué ajustaría primero en tu caso</h3>
       <div class="copy" id="txt">${texto}</div>
-      <button class="btn btn-ink" onclick="dm()">Copiar y abrir mi DM</button>
-      <div class="mini">Se copia tu resultado. En el chat solo pégalo y envía.</div>
+      <button class="btn btn-ink" id="cp" onclick="copiar()">Copiar mi resultado</button>
+      <div class="mini" id="paso">Luego cierra esta página y pégalo en nuestro chat de Instagram.</div>
     </div>
     <div class="case"><b>Así lo hice yo</b>Bajé de 82 a 69 kg y terminé un medio maratón (21 km) trabajando de tiempo completo. Lo que cambió no fueron las horas: fue tener todas las piezas conectadas en un sistema.</div>
     <div class="prog"><h3>Los directivos que trabajan conmigo 90 días tienen las 4 piezas del Método de Integración Híbrida</h3>
@@ -208,12 +208,16 @@ function resp(v){ st.r[st.i]=v; setTimeout(()=>go(st.i+1),150); }
 function prof(k){ st.prof=PROF[k]; st.i=Q.length+1; resultado(); }
 function reiniciar(){ st.r=Array(Q.length).fill(null); st.prof=''; st.enviado=false; go(-1); }
 
-function dm(){
+function copiar(){
   const t = document.getElementById('txt').textContent;
-  const abrir = () => { location.href = 'https://ig.me/m/' + IG; };
+  const listo = () => {
+    const b = document.getElementById('cp'); b.textContent = '✓ Copiado';
+    const p = document.getElementById('paso');
+    p.innerHTML = '<b style="color:#111;font-size:15px">Ahora cierra esta página (la X de arriba) y pégalo en nuestro chat. Ahí te contesto.</b>';
+  };
   if(navigator.clipboard && window.isSecureContext){
-    navigator.clipboard.writeText(t).then(abrir, ()=>{ copiaVieja(t); abrir(); });
-  } else { copiaVieja(t); abrir(); }
+    navigator.clipboard.writeText(t).then(listo, ()=>{ copiaVieja(t); listo(); });
+  } else { copiaVieja(t); listo(); }
 }
 function copiaVieja(t){
   const a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0';
